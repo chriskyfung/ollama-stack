@@ -1,0 +1,48 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"  # Localhost only for security
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - llm-net
+    environment:
+      - OLLAMA_CONTEXT_LENGTH=4k
+      - OLLAMA_KEEP_ALIVE=5m
+      - OLLAMA_MAX_LOADED_MODELS=2  # Tune for 24GB
+      - OLLAMA_FLASH_ATTENTION=1
+    deploy:  
+      resources:
+        limits:
+          cpus: '3.4'  # ~75% of 4 OCPU
+          memory: 18G
+        reservations:
+          memory: 16G  
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN_FILE: /run/secrets/tunnel_token
+    secrets:
+      - tunnel_token
+    depends_on:
+      - ollama
+    networks:
+      - llm-net
+
+volumes:
+  ollama-data:
+
+networks:
+  llm-net:
+    driver: bridge
+
+secrets:
+  tunnel_token:
+    file: .secrets/tunnel_token.txt
