@@ -1,7 +1,6 @@
 services:
   ollama:
     image: ollama/ollama:latest
-    container_name: ollama
     restart: unless-stopped
     ports:
       - "127.0.0.1:11434:11434"  # Localhost only for security
@@ -24,7 +23,6 @@ services:
 
   cloudflared:
     image: cloudflare/cloudflared:latest
-    container_name: cloudflared
     restart: unless-stopped
     command: tunnel --no-autoupdate run
     environment:
