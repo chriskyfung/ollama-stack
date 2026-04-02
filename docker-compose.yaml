@@ -9,7 +9,7 @@ services:
     networks:
       - llm-net
     environment:
-      - OLLAMA_CONTEXT_LENGTH=4k
+      - OLLAMA_CONTEXT_LENGTH=8192
       - OLLAMA_KEEP_ALIVE=5m
       - OLLAMA_MAX_LOADED_MODELS=2  # Tune for 24GB
       - OLLAMA_FLASH_ATTENTION=1
