@@ -13,13 +13,13 @@ services:
       - OLLAMA_KEEP_ALIVE=5m
       - OLLAMA_MAX_LOADED_MODELS=2  # Tune for 24GB
       - OLLAMA_FLASH_ATTENTION=1
-    deploy:  
+    deploy:
       resources:
         limits:
           cpus: '3.4'  # ~75% of 4 OCPU
           memory: 18G
         reservations:
-          memory: 16G  
+          memory: 16G
 
   cloudflared:
     image: cloudflare/cloudflared:latest
