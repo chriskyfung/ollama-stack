@@ -2,3 +2,10 @@ services:
   ollama:
     environment:
       - OLLAMA_ORIGINS=moz-extension://*
+    networks:
+      - ollama-network
+
+networks:
+  ollama-network:
+    external: true
+    name: ollama-network
