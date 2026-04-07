@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate: # Renamed job to reflect its purpose
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Restrict permissions to read-only for security
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Validate Docker Compose file syntax
+      run: docker compose config --quiet # Use --quiet for less verbose output and linting
